@@ -15,6 +15,23 @@
 - 默认视觉模型 `qwen3.7-flash`（千问AI平台 / DashScope 兼容端点），可被 `VISION_API_URL` / `VISION_MODEL` 覆盖，任意 OpenAI 兼容视觉端点都能用。
 - 本地图片自动压缩（>512KB 缩放为 ≤1280px JPEG85%）与 429 重试。
 
+### 1b. 深度视觉工具（dsh-vision-router 核心能力移植，同一 MCP 服务器）
+
+| 工具 | 功能 | 实现 |
+|---|---|---|
+| `analyze_image` | 图片描述 / Q&A / OCR / 局部区域放大 | 视觉模型 |
+| `vision_ground` | 目标定位 → 原图像素坐标框 + 红框标注图 | 视觉模型 + jimp |
+| `vision_detect` | 元素编号清单 + 每个元素坐标框 + 标注图 | 视觉模型 + jimp |
+| `vision_pixel_diff` | 像素级对比：差异比例 / 差异像素数 / 8x8 最差网格 / 红色热力图 | 纯本地 jimp |
+| `vision_html_screenshot` | HTML 文件 / URL / 内联 HTML → PNG 截图 | 系统 Chrome/Edge headless |
+| `vision_colors` | 主色调提取：HEX + 占比 | 纯本地 jimp |
+| `vision_bootstrap` | 结构化首轮预读：summary / 布局区域 / 实体清单 / 逐字文本 | 视觉模型 |
+
+> 坐标框说明：`vision_ground` / `vision_detect` 的坐标由视觉模型估计，为**近似精度**（可能偏差数十像素）；
+> 需要像素级精确时，配合 `vision_pixel_diff` 或 `analyze_image` 的 `region` 放大复核。
+> 本地处理链：图像处理用 jimp（等价 sharp 的裁剪/缩放/标注），HTML 渲染用系统 Chrome/Edge（等价 dsh 的 system Chrome），
+> OCR 由视觉模型承担（等价 tesseract 的用途）。
+
 ### 2. 本地代理 vision-proxy（可选，粘贴即自动识图）
 
 - 插在 Codex 与模型网关之间：收到带图请求 → 视觉模型识图 → 文字替换图片 → 再转发。
