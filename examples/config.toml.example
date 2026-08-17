@@ -1,0 +1,12 @@
+# 在 ~/.codex/config.toml 中追加以下内容（用你自己的 Key）
+
+[mcp_servers.vision]
+command = "node"
+args = ["<本仓库绝对路径>/mcp/dist/index.js"]
+env = { QIANWEN_API_KEY = "YOUR_QIANWEN_OR_DASHSCOPE_API_KEY" }
+enabled = true
+
+# 可选：粘贴即自动识图（本地代理）
+# 1) 复制 proxy/.env.example 为 proxy/.env 并填 Key
+# 2) 启动: node proxy/server.js（监听 127.0.0.1:5843）
+# 3) 把你模型 provider 的 base_url 改为 http://127.0.0.1:5843/v1

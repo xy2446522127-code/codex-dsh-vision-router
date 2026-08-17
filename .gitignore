@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+*.log
+*.err.log
+crop-*.png
+tile-*.png
+test-image.b64.txt
+.DS_Store
+Thumbs.db

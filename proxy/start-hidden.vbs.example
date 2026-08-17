@@ -1,0 +1,2 @@
+Set sh = CreateObject("WScript.Shell")
+sh.Run """<YOUR_NODE_EXE_PATH>"" ""<本仓库绝对路径>\proxy\server.js""", 0, False
